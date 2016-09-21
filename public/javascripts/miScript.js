@@ -2,7 +2,47 @@
 var correctCards = 0;
 $( init );
 
+
 function init() {
+    
+    //scale
+    
+    var $el = $("#very-specific-design");
+var elHeight = $el.outerHeight();
+var elWidth = $el.outerWidth();
+
+var $wrapper = $("#content");
+
+$wrapper.resizable({
+  resize: doResize
+});
+
+function doResize(event, ui) {
+  
+  var scale, origin;
+    
+  scale = Math.min(
+    ui.size.width / elWidth,    
+    ui.size.height / elHeight
+  );
+  
+  $el.css({
+    transform: "translate(-50%, -50%) " + "scale(" + scale + ")"
+  });
+  
+}
+
+var starterData = { 
+  size: {
+    width: $wrapper.width(),
+    height: $wrapper.height()
+  }
+}
+doResize(null, starterData);
+    
+    
+    //scale final
+    
 
   // Hide the success message
   $('#successMessage').hide();
@@ -20,15 +60,22 @@ function init() {
 
   // Create the pile of shuffled cards
   var numbers = [ 1, 2, 3];
-  numbers.sort( function() { return Math.random() - .5 } );
+  var fotos = [ 'asteroide', 'volcan', 'clima'];
+    var numeroRandom = Math.random() - .5;
+
+  numbers.sort( function() { return numeroRandom } );
+    fotos.sort( function() { return numeroRandom } );
+    
 
   for ( var i=0; i<3; i++ ) {
-    $('<div>' + numbers[i] + '</div>').data( 'number', numbers[i] ).attr( 'id', 'card'+numbers[i] ).appendTo( '#cardPile' ).draggable( {
+      $('<img src' + numbers[i] + '>')
+    $('<div>' + '</div>').data( 'number', numbers[i] ).attr( 'id', 'card' +numbers[i] ).appendTo( '#cardPile' ).draggable( {
       containment: '#content',
       stack: '#cardPile div',
-      cursor: 'move',
+      cursor: 'pointer',
       revert: true
-    } );
+    } )
+    .append('<img id="theImg" class="photo" src="../images/' + fotos[i] + '.jpg"/>');
   }
 
   // Create the card slots
@@ -64,10 +111,10 @@ function handleCardDrop( event, ui ) {
   // If all the cards have been placed correctly then display a message
   // and reset the cards for another go
 
-  if ( correctCards == 10 ) {
+  if ( correctCards == 3 ) {
     $('#successMessage').show();
     $('#successMessage').animate( {
-      left: '380px',
+      left: '34%',
       top: '200px',
       width: '400px',
       height: '100px',
